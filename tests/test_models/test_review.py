@@ -61,7 +61,6 @@ class TestReview(unittest.TestCase):
         """checks attributes datatypes"""
         self.assertIs(type(self.review.place_id), str)
         self.assertIs(type(self.review.user_id), str)
-        
         self.assertEqual(str, type(Review().id))
 
         self.assertEqual(datetime, type(Review().created_at))

@@ -9,11 +9,11 @@ import json
 import os
 import uuid
 from models.base_model import BaseModel
-from models.city import City
 from models.engine.file_storage import FileStorage
 from models import storage
 from datetime import datetime
-from models.state import State
+from models.user import User
+
 
 class TestUser(unittest.TestCase):
     """
@@ -38,7 +38,7 @@ class TestUser(unittest.TestCase):
 
     def test_class_exitence(self):
         """check if class exists"""
-        temp = "<class 'models.city.City'>"
+        temp = "<class 'models.user.User'>"
         self.assertEqual(str(type(self.user)), temp)
 
     def test_subclass_inheritance(self):
@@ -53,11 +53,10 @@ class TestUser(unittest.TestCase):
         """check for class doc string"""
         self.assertIsNotNone(User.__doc__)
 
-    def test_class_attributes(self):
+    def test_inherited_class_attributes(self):
         self.assertTrue('id' in self.user.__dict__)
         self.assertTrue('created_at' in self.user.__dict__)
         self.assertTrue('updated_at' in self.user.__dict__)
-        self.assertTrue('name' in self.user.__dict__)
 
     def test_attribute_type(self):
         """checks attributes datatypes"""
@@ -72,19 +71,19 @@ class TestUser(unittest.TestCase):
         """test class attributes"""
         user_obj = User()
 
-        self.assertEqual(str, type(user_obj.name))
+        self.assertEqual(str, type(user_obj.email))
         self.assertIn("email", dir(user_obj))
         self.assertNotIn("email", user_obj.__dict__)
 
-        self.assertEqual(str, type(user_obj.name))
+        self.assertEqual(str, type(user_obj.password))
         self.assertIn("password", dir(user_obj))
         self.assertNotIn("password", user_obj.__dict__)
 
-        self.assertEqual(str, type(user_obj.name))
+        self.assertEqual(str, type(user_obj.first_name))
         self.assertIn("first_name", dir(user_obj))
         self.assertNotIn("first_name", user_obj.__dict__)
 
-        self.assertEqual(str, type(user_obj.name))
+        self.assertEqual(str, type(user_obj.last_name))
         self.assertIn("last_name", dir(user_obj))
         self.assertNotIn("last_name", user_obj.__dict__)
 

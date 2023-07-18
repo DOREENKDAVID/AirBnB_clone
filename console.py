@@ -32,7 +32,7 @@ class HBNBCommand(cmd.Cmd):
     """
     prompt = '(hbnb) '
 
-    def _precmd(self, line):
+    def defult(self, line):
         """Checks for specified input format
         and groups them together to create a proper commandline
         """
