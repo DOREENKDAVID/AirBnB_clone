@@ -35,6 +35,9 @@ class FileStorage:
         key = <obj class name>.id
         value = instances of BaseModel class
         """
+        if obj.id in FileStorage.__objects:
+            print("exists")
+            return
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
         FileStorage.__objects[key] = obj
 
@@ -46,7 +49,7 @@ class FileStorage:
                 "BaseModel": BaseModel,
                 "User": User,
                 "State": State,
-                "City": city,
+                "City": City,
                 "Amenity": Amenity,
                 "Place": Place,
                 "Review": Review}
@@ -67,7 +70,7 @@ class FileStorage:
         """
         if not os.path.isfile(FileStorage.__file_path):
             return
-        with open(FileStorage.__file_path, encoding='utf-8') as json_file:
+        with open(FileStorage.__file_path, "r", encoding='utf-8') as json_file:
             des_dict = json.load(json_file)
             des_dict = {key: self.classes_dict()[value['__class__']](**value)
                         for key, value in des_dict.items()}
