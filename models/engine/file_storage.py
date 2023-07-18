@@ -70,8 +70,8 @@ class FileStorage:
         """
         if not os.path.isfile(FileStorage.__file_path):
             return
-        with open(FileStorage.__file_path, "r", encoding='utf-8') as json_file:
-            des_dict = json.load(json_file)
-            des_dict = {key: self.classes_dict()[value['__class__']](**value)
-                        for key, value in des_dict.items()}
-            FileStorage.__objects = des_dict
+        with open(FileStorage.__file_path, "r", encoding="utf-8") as file:
+            new_dict = json.load(file)
+            new_dict = {k: self.classes_dict()[val["__class__"]](**val)
+                        for key, val in new_dict.items()}
+            FileStorage.__objects = new_dict

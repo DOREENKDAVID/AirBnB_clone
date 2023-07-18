@@ -13,7 +13,6 @@ from models.city import City
 from models.review import Review
 from models.place import Place
 from models.state import State
-from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 
 classes_dict = {
@@ -32,42 +31,6 @@ class HBNBCommand(cmd.Cmd):
     """
     prompt = '(hbnb) '
 
-    def defult(self, line):
-        """Checks for specified input format
-        and groups them together to create a proper commandline
-        """
-        if line is None:
-            return
-
-        cmd_pattern = r"^([A-Za-z]+)\.([a-z]+)\(([^(]*)\)"
-        param_pattern = r'^"([^"]+)"(?:,\s*'
-        r'(?:"([^"]+)"|(\{[^}]+\}))(?:,\s*(?:("?[^"]+"?)))?)?'
-
-        tmp = re.match(cmd_pattern, line)
-        if not tmp:
-            super().precmd(line)
-            return
-        tmp_name, tmp_method, tmp_params = tmp.groups()
-        tmp = re.match(param_pattern, tmp_params)
-        tmp_params = [i for i in tmp.groups() if i] if tmp else []
-
-        command = " ".join([tmp_name] + tmp_params)
-
-        if tmp_method == 'show':
-            return self.do_show(command)
-
-        if tmp_method == 'destroy':
-            return self.do_destroy(command)
-
-        if tmp_method == 'all':
-            return self.do_all(command)
-
-        if tmp_method == 'update':
-            return self.do_update(command)
-
-        if tmp_method == 'count':
-            return self.do_count(command)
-
     def do_EOF(self, line):
         """Handles end-of-file: EOF
         """
@@ -77,6 +40,11 @@ class HBNBCommand(cmd.Cmd):
         """Quit command to exit program
         """
         return True
+
+    def help_quit(self):
+        """two arguments involved"""
+        print('\n'.join(["Quit command to exit the program"]))
+
 
     def emptyline(self):
         """Does nothing when empty line is entered in response to the prompt
@@ -184,6 +152,42 @@ class HBNBCommand(cmd.Cmd):
             if val.__class__.__name__ == line:
                 class_count += 1
         print(class_count)
+
+    def precmd(self, line):
+        """Checks for specified input format
+        and groups them together to create a proper commandline
+        """
+        if line is None:
+            return
+
+        cmd_pattern = r"^([A-Za-z]+)\.([a-z]+)\(([^(]*)\)"
+        param_pattern = r'^"([^"]+)"(?:,\s*'
+        r'(?:"([^"]+)"|(\{[^}]+\}))(?:,\s*(?:("?[^"]+"?)))?)?'
+
+        tmp = re.match(cmd_pattern, line)
+        if not tmp:
+            super().precmd(line)
+            return
+        tmp_name, tmp_method, tmp_params = tmp.groups()
+        tmp = re.match(param_pattern, tmp_params)
+        tmp_params = [i for i in tmp.groups() if i] if tmp else []
+
+        command = " ".join([tmp_name] + tmp_params)
+
+        if tmp_method == 'show':
+            return self.do_show(command)
+
+        if tmp_method == 'destroy':
+            return self.do_destroy(command)
+
+        if tmp_method == 'all':
+            return self.do_all(command)
+
+        if tmp_method == 'update':
+            return self.do_update(command)
+
+        if tmp_method == 'count':
+            return self.do_count(command)
 
 
 if __name__ == "__main__":
