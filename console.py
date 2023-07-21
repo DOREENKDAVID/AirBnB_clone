@@ -1,58 +1,58 @@
 #!/usr/bin/python3
-"""The console module
-"""
-import re
-import sys
+
+"""An interactive console module"""
+
 import cmd
-import json
+import re
 import models
+from models.base_model import BaseModel
 from models import storage
+import json
 from models.user import User
-from models.amenity import Amenity
-from models.city import City
-from models.review import Review
 from models.place import Place
 from models.state import State
-from models.base_model import BaseModel
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
-classes_dict = {
-            "BaseModel": BaseModel,
-            "User": User,
-            "Place": Place,
-            "Amenity": Amenity,
-            "City": City,
-            "Review": Review,
-            "State": State
-        }
+class_dict = {
+    "BaseModel": BaseModel,
+    "User": User,
+    "Place": Place,
+    "Amenity": Amenity,
+    "City": City,
+    "Review": Review,
+    "State": State
+}
 
 
 class HBNBCommand(cmd.Cmd):
     """Entry point of the command interpreter
     """
-    prompt = '(hbnb) '
+    prompt = '(hbnb)  '
 
     def do_EOF(self, line):
-        """Handles end-of-file: EOF
-        """
+        """ Handles end-of-file: EOF Exits console"""
+        print("")
         return True
 
     def do_quit(self, line):
-        """Quit command to exit program
-        """
+        """Quit command to exit the program"""
+        print("Quiting!")
         return True
 
     def help_quit(self):
-        """two arguments involved"""
+        """when two arguments involve"""
         print('\n'.join(["Quit command to exit the program"]))
 
-
     def emptyline(self):
-        """Does nothing when empty line is entered in response to the prompt
-        """
-        pass
+        """ Does nothing when empty line is entered in response to the prompt """
+        return False
+        # OR
+        # pass
 
     def do_create(self, line):
-        """Creates a new instance of BaseModel,
+        """Creates a new instances of a class
         saves it (to the JSON file) and prints the id.
         """
         if line:
@@ -60,6 +60,7 @@ class HBNBCommand(cmd.Cmd):
                 temp_class = globals().get(line, None)
                 tmp = temp_class()
                 tmp.save()
+                print(tmp.id)  # print the id
             except Exception:
                 print("** class doesn't exist **")
         else:
@@ -69,17 +70,20 @@ class HBNBCommand(cmd.Cmd):
         """Prints the string representation of an instance
         based on the class name and id.
         """
-        tmp = line.split()
+        tmp = line.split()    # split & assign to varia
+
         if len(tmp) < 1:
             print("** class name missing **")
-        elif tmp[0] not in classes_dict:
-            print("** class doesn't exit **")
+        elif tmp[0] not in class_dict:
+            print("** class doesn't exist **")
         elif len(tmp) < 2:
             print("** instance id missing **")
         else:
-            new_string = "{}.{}".format(tmp[0], tmp[1])
+            new_string = "{}.{}".format(tmp[0],arr[1])
             if new_string not in storage.all():
                 print("** no instance found **")
+            else:
+                print(storage.all()[new_string])
 
     def do_destroy(self, line):
         """Deletes an instance based on the class name and id
@@ -88,8 +92,8 @@ class HBNBCommand(cmd.Cmd):
         tmp = line.split()
         if len(tmp) < 1:
             print("** class name missing **")
-        elif tmp[0] not in classes_dict:
-            print("** class doesn't exit **")
+        elif tmp[0] not in class_dict:
+            print("** class doesn't exist **")
         elif len(tmp) < 2:
             print("** instance id missing **")
         else:
@@ -97,54 +101,58 @@ class HBNBCommand(cmd.Cmd):
             if new_string not in storage.all().keys():
                 print("** no instance found **")
             else:
-                del(storage.all()[new_string])
+                storage.all().pop(new_string)
                 storage.save()
 
     def do_all(self, line):
         """Prints all string representation of all instances
-        based or not on the class name.
-        """
+        based or not on the class name. """
         str_list = []
-        if not line:
-            for key, val in storage.all().items():
-                str_list.append(str(val))
-            print(str_list)
-        elif line not in classes_dict:
-            print("** class doesn't exist **")
+        if line == "":
+            print([str(value) for key, value in storage.all().items()])
         else:
-            for key, val in storage.all().items():
-                if val.__class__.__name__ == line:
-                    str_list.append(str(val))
-            print(str_list)
+            string = line.split(" ")
+            if string[0] not in class_dict:
+                print("** class doesn't exist **")
+            else:
+                for key, value in storage.all().items():
+                    klass = key.split(".")
+                    if klass[0] == string[0]:
+                        objects.append(str(value))
+                print(str_list)
 
     def do_update(self, line):
         """Updates an instance based on the class name and id
         by adding or updating attribute (save the change into the JSON file).
         """
         tmp = line.split()
-        if len(tmp) < 1:
+        if len(temp) < 1:
             print("** class name missing **")
-        elif tmp[0] not in classes_dict:
-            print("** class doesn't exit **")
+            return
+        elif tmp[0] not in class_dict:
+            print("** class doesn't exist **")
+            return
         elif len(tmp) < 2:
             print("** instance id missing **")
+            return
         else:
-            new_string = "{}.{}".format(tmp[0], tmp[1])
+            new_string = f"{arr[0]}.{arr[1]}"
             if new_string not in storage.all().keys():
                 print("** no instance found **")
             elif len(tmp) < 3:
                 print("** attribute name missing **")
+                return
             elif len(tmp) < 4:
                 print("** value missing **")
+                return
             else:
                 setattr(storage.all()[new_string], tmp[2], tmp[3])
                 storage.save()
 
     def do_count(self, line):
-        """Retrieves the number of instances of a class
-        """
-        tmp = globals().get(line, None)
-        if tmp is None:
+        """Retrieves the number of instances of a class"""
+        temp = globals().get(line, None)
+        if temp is None:
             print("** class doesn't exist **")
             return
         class_count = 0
@@ -153,26 +161,30 @@ class HBNBCommand(cmd.Cmd):
                 class_count += 1
         print(class_count)
 
-    def precmd(self, line):
+    def default(self, line):
         """Checks for specified input format
         and groups them together to create a proper commandline
         """
         if line is None:
             return
 
-        cmd_pattern = r"^([A-Za-z]+)\.([a-z]+)\(([^(]*)\)"
-        param_pattern = r'^"([^"]+)"(?:,\s*'
-        r'(?:"([^"]+)"|(\{[^}]+\}))(?:,\s*(?:("?[^"]+"?)))?)?'
-
-        tmp = re.match(cmd_pattern, line)
+        cmd_Pattern = "^([A-Za-z]+)\.([a-z]+)\(([^(]*)\)"
+        param_Pattern = """^"([^"]+)"(?:,\s*(?:"([^"]+)"|(\{[^}]+\}))(?:,\s*(?:("?[^"]+"?)))?)?"""
+        tmp = re.match(cmd_Pattern, line)
         if not tmp:
-            super().precmd(line)
+            super().default(line)
             return
-        tmp_name, tmp_method, tmp_params = tmp.groups()
-        tmp = re.match(param_pattern, tmp_params)
-        tmp_params = [i for i in tmp.groups() if i] if tmp else []
+        tmpName, tmp_method, tmp_params = tmp.groups()
+        tmp = re.match(param_Pattern, tmp_params)
+        tmp_params = [item for item in tmp.groups() if item] if tmp else []
 
-        command = " ".join([tmp_name] + tmp_params)
+        command = " ".join([tmpName] + tmp_params)
+
+        if tmp_method == 'all':
+            return self.do_all(command)
+
+        if tmp_method == 'count':
+            return self.do_count(command)
 
         if tmp_method == 'show':
             return self.do_show(command)
@@ -180,15 +192,9 @@ class HBNBCommand(cmd.Cmd):
         if tmp_method == 'destroy':
             return self.do_destroy(command)
 
-        if tmp_method == 'all':
-            return self.do_all(command)
-
         if tmp_method == 'update':
             return self.do_update(command)
 
-        if tmp_method == 'count':
-            return self.do_count(command)
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     HBNBCommand().cmdloop()
