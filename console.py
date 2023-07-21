@@ -46,7 +46,8 @@ class HBNBCommand(cmd.Cmd):
         print('\n'.join(["Quit command to exit the program"]))
 
     def emptyline(self):
-        """ Does nothing when empty line is entered in response to the prompt """
+        """ Does nothing when empty line is entered
+        in response to the prompt """
         return False
         # OR
         # pass
@@ -79,7 +80,7 @@ class HBNBCommand(cmd.Cmd):
         elif len(tmp) < 2:
             print("** instance id missing **")
         else:
-            new_string = "{}.{}".format(tmp[0],arr[1])
+            new_string = "{}.{}".format(tmp[0], tmp[1])
             if new_string not in storage.all():
                 print("** no instance found **")
             else:
@@ -168,8 +169,9 @@ class HBNBCommand(cmd.Cmd):
         if line is None:
             return
 
-        cmd_Pattern = "^([A-Za-z]+)\.([a-z]+)\(([^(]*)\)"
-        param_Pattern = """^"([^"]+)"(?:,\s*(?:"([^"]+)"|(\{[^}]+\}))(?:,\s*(?:("?[^"]+"?)))?)?"""
+        cmd_Pattern = r"^([A-Za-z]+)\.([a-z]+)\(([^(]*)\)"
+        param_Pattern = r'^"([^"]+)"(?:,\s*'
+        r'(?:"([^"]+)"|(\{[^}]+\}))(?:,\s*(?:("?[^"]+"?)))?)?'
         tmp = re.match(cmd_Pattern, line)
         if not tmp:
             super().default(line)
