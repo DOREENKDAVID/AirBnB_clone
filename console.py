@@ -49,8 +49,6 @@ class HBNBCommand(cmd.Cmd):
         """ Does nothing when empty line is entered
         in response to the prompt """
         return False
-        # OR
-        # pass
 
     def do_create(self, line):
         """Creates a new instances of a class
@@ -119,7 +117,7 @@ class HBNBCommand(cmd.Cmd):
                 for key, value in storage.all().items():
                     klass = key.split(".")
                     if klass[0] == string[0]:
-                        objects.append(str(value))
+                        str_list.append(str(value))
                 print(str_list)
 
     def do_update(self, line):
@@ -127,7 +125,7 @@ class HBNBCommand(cmd.Cmd):
         by adding or updating attribute (save the change into the JSON file).
         """
         tmp = line.split()
-        if len(temp) < 1:
+        if len(tmp) < 1:
             print("** class name missing **")
             return
         elif tmp[0] not in class_dict:
@@ -137,7 +135,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
         else:
-            new_string = f"{arr[0]}.{arr[1]}"
+            new_string = "{}.{}".format(tmp[0], tmp[1])
             if new_string not in storage.all().keys():
                 print("** no instance found **")
             elif len(tmp) < 3:
