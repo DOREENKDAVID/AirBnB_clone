@@ -5,19 +5,21 @@ section.filters {
 	border: 1px solid #DDDDDD;
 	border-radius: 4px;
 	display: flex;
-	justify-content: flex-end;
 }
 
-section.filters div.location {
+section.filters div.locations {
 	height: 100%;
 	width: 25%;
-	border right: 1px solid #DDDDDD;
+	border-right: 1px solid #DDDDDD;
+	flex-direction: column;
+    box-sizing: border-box;
 }
-div.location h3 {
+div.locations h3 {
 	font-weight: 600;
 	margin-bottom: 0px;
+	margin-left: 50px;
 }
-div.location h4 {
+div.locations h4 {
 	font-weight: 400;
 	font-size: 14px;
 	margin: 4px auto;
@@ -26,16 +28,21 @@ div.location h4 {
 section.filters div.amenities {
         height: 100%;
         width: 25%;
-        border right: 1px solid #DDDDDD;
+        margin-right: 1px solid #DDDDDD;
+		flex-direction: column;
+    	box-sizing: border-box;
 }
 div.amenities h3 {
         font-weight: 600;
         margin-bottom: 0px;
+		margin-left: 50px;
 }
 div.amenities h4 {
         font-weight: 400;
         font-size: 14px;
-	margin: 4px auto;
+	    margin: 4px auto;
+		margin-left: 50px;
+		margin-bottom: 16px;
 }
 
 
@@ -51,5 +58,52 @@ section.filters button {
 
 section.filters button:hover {
 	opacity: 90%;
+}
+
+ul.popover{
+	list-style: none;
+	border: 1px solid #DDDDDD;
+	border-radius: 4px;
+	background-color: #fafafa;
+	margin-top: 0px;
+	padding-left: 0px;
+	padding-bottom: 20px;
+	padding-top: 20px;
+}
+
+div.locations ul, div.amenities ul{
+	display: none;
+
+};
+
+section.filters div.locations:hover > ul{
+	display: block;
+	z-index: 999;
+}
+
+section.filters div.amenities:hover > ul{
+	display: block;
+	z-index: 999;
+}
+div.locations ul.popover{
+	padding-bottom: 45px;
+}
+div.locations ul.popover li h2 {
+	font-size: 18px;
+	padding-left: 35px;
+	margin-bottom: 4px;
+	margin-top: 0px;
+}
+div.locations ul.popover li h2.Memphis {
+	margin-top: 30px;
+}
+div.locations ul.popover li p{ 
+	padding-left: 50px;
+	margin: 6px;
+
+}
+div.amenities ul.popover li p {
+	padding-left: 50px;
+	margin: 6px;
 }
 
