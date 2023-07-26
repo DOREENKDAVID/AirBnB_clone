@@ -1,21 +1,11 @@
-#!usr/bin/python3
-"""
-User module
-"""
+#!/usr/bin/python3
+""" Class user """
+
 from models.base_model import BaseModel
 
 
 class User(BaseModel):
-    """
-    Subclass of Base model calls that contains user information
-    Attributes:
-        email: string - empty string
-        password: string - empty string
-        first_name: string - empty string
-        last_name: string - empty string
-
-    """
-
+    """ Class user """
     email = ""
     password = ""
     first_name = ""

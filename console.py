@@ -167,9 +167,8 @@ class HBNBCommand(cmd.Cmd):
         if line is None:
             return
 
-        cmd_Pattern = r"^([A-Za-z]+)\.([a-z]+)\(([^(]*)\)"
-        param_Pattern = r'^"([^"]+)"(?:,\s*'
-        r'(?:"([^"]+)"|(\{[^}]+\}))(?:,\s*(?:("?[^"]+"?)))?)?'
+        cmd_Pattern = "^([A-Za-z]+)\.([a-z]+)\(([^(]*)\)"
+        param_Pattern = """^"([^"]+)"(?:,\s*(?:"([^"]+)"|(\{[^}]+\}))(?:,\s*(?:("?[^"]+"?)))?)?"""
         tmp = re.match(cmd_Pattern, line)
         if not tmp:
             super().default(line)
